@@ -1,0 +1,122 @@
+<div id="velikiDiv" >
+
+<div *ngIf="!prikaziRezultate">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Search By</label>
+    <select [(ngModel)]="odabranKriterijum" class="form-control">
+      <option  [ngValue]="1">Magazine Name</option>
+      <option  [ngValue]="2">Title</option>
+      <option  [ngValue]="3">Authors</option>
+      <option  [ngValue]="4">Keywords</option>
+      <option  [ngValue]="5">Content</option>
+      <option  [ngValue]="6">Scientific Area</option>
+      <option  [ngValue]="7">Advanced Search</option>
+    </select>
+  </div>
+  <br>
+
+
+  <div *ngIf="odabranKriterijum !=0 &&  odabranKriterijum !=5 && odabranKriterijum != 6 && odabranKriterijum != 7">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Search Criteria</label>
+    <input type="text" [(ngModel)]="kriterijum" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Search as Phrase?</label>
+    <input type="checkbox" [(ngModel)]="kaoFraza" class="form-control">
+  </div>
+  <button  class="btn btn-success" (click)="onSubmit()"  type="submit">Search</button>
+  </div>
+
+  <div *ngIf="odabranKriterijum == 5">
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Search Criteria</label>
+      <textarea class="form-control" [(ngModel)]="kriterijum" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Search as Phrase?</label>
+      <input type="checkbox" [(ngModel)]="kaoFraza" class="form-control">
+    </div>
+    <button  class="btn btn-success" (click)="onSubmit()"  type="submit">Search</button>
+    </div>
+
+  <div *ngIf="odabranKriterijum == 6">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Scientific Area</label>
+    <select [(ngModel)]="odabraneOblasti" multiple class="form-control">
+      <option *ngFor="let naucnaOblast of naucneOblasti" [ngValue]="naucnaOblast.id">
+        {{naucnaOblast.naziv}}
+      </option>
+    </select>
+  </div>
+  <button  class="btn btn-success" (click)="onSubmit()"  type="submit">Search</button>
+  </div>
+
+  <div *ngIf="odabranKriterijum == 7">
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Magazine Name</label>
+      <input type="text" [(ngModel)]="magazineName" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Obligatory?</label>
+      <input type="checkbox" [(ngModel)]="magazineCheck" class="form-control">
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Title</label>
+      <input type="text" [(ngModel)]="title" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Obligatory?</label>
+      <input type="checkbox" [(ngModel)]="titleCheck" class="form-control">
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Authors</label>
+      <input type="text" [(ngModel)]="authors" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Obligatory?</label>
+      <input type="checkbox" [(ngModel)]="authorsCheck" class="form-control">
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Keyterms</label>
+      <input type="text" [(ngModel)]="keyTerms" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Obligatory?</label>
+      <input type="checkbox" [(ngModel)]="keyTermsCheck" class="form-control">
+    </div>
+    <br>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Content</label>
+      <textarea class="form-control" [(ngModel)]="content" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1">Obligatory?</label>
+      <input type="checkbox" [(ngModel)]="contentCheck" class="form-control">
+    </div>
+    <button  class="btn btn-success" (click)="advancedSearch()"  type="submit">Search</button>
+    </div>
+
+
+</div>
+
+
+  
+<div *ngIf="prikaziRezultate">
+  <div *ngFor="let rezultat of rezultati" class="card" style="width: 60rem;margin-top: 10px;">
+    <div class="card-body">
+      <h5 class="card-title">{{rezultat.title}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{rezultat.magazineName}}</h6>
+      <p class="card-text">Authors: {{rezultat.authors}}</p>
+      <p class="card-text" [innerHtml]="rezultat.highlight"></p>
+      <button class="btn btn-success" (click)="downloadPDF(rezultat.id)">Download</button>
+    </div>
+  </div>
+</div>
+<br>
+<button *ngIf="prikaziRezultate" class="btn btn-success" (click)="back()"  type="submit">Back</button>
+
+</div>

@@ -1,0 +1,40 @@
+<!-- <app-navbar></app-navbar> -->
+<div class="container" style="max-width:390px;">
+    
+    <h1 style="margin-left: 30%;">Sign in</h1>
+
+    
+   
+      <!-- <div *ngIf="!validEmail" id="em" class="form-group animated bounceInRight">
+        <label for="username">Enter your Email address</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
+          required />
+
+      </div> -->
+
+      <div *ngIf="validEmail" id="username" class="form-group animated bounceInLeft">
+        <label for="username">Enter your Username</label>
+        <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel"
+          required />
+      </div>
+
+      <div *ngIf="validEmail" id="pass" class="form-group animated bounceInLeft">
+        <label for="password">Enter your Password</label>
+        <input type="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
+          required minlength="6" />
+      </div>
+
+      <div *ngIf="validEmail" class="form-group animated bounceInLeft">
+          <button style="width: 100%" (click)="onSubmit()" class="regBtn btn btn-success">Sign in</button>
+          <div *ngIf="isLoginFailed" class="alert alert-danger">
+            Login failed: {{errorMessage}}
+          </div>
+        </div>
+      
+      <!-- <div *ngIf="!validEmail" class="form-group">
+        <button (click)="checkEmail()" style="margin-bottom: 20px; width: 100%;" type="button" class="btn btn-success">Next</button>
+        <div *ngIf="isLoginFailed" class="alert alert-danger">
+          Login failed: {{errorMessage}}
+        </div>
+      </div> -->
+  </div>

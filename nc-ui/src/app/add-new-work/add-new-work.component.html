@@ -1,0 +1,77 @@
+<div id="velikiDiv" >
+<div *ngIf="forma">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Choose Magazine</label>
+    <select [(ngModel)]="newWorkDTO.casopisId" class="form-control">
+      <option *ngFor="let casopis of casopisi" [ngValue]="casopis.id">
+        {{casopis.naziv}}
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Title</label>
+    <input type="text" [(ngModel)]="newWorkDTO.naslov" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Keywords</label>
+    <input type="text" [(ngModel)]="newWorkDTO.kljucneReci" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Abstract</label>
+    <input type="text" [(ngModel)]="newWorkDTO.apstrakt" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1">PDF</label>
+    <input class="form-control" (change)="handleFileInput($event.target.files)" type="file" ngModel accept=".pdf">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Scientific Area</label>
+    <select [(ngModel)]="newWorkDTO.naucnaOblastId" class="form-control">
+      <option *ngFor="let naucnaOblast of naucneOblasti" [ngValue]="naucnaOblast.id">
+        {{naucnaOblast.naziv}}
+      </option>
+    </select>
+  </div>
+  <input  class="btn btn-success" (click)="onSubmit()" type="submit">
+</div>
+
+<div *ngIf="!forma">
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Browse Reviewers By</label>
+    <select [(ngModel)]="recOdakle" (change)="onChange()" class="form-control">
+      <option  [ngValue]="1">Scientific Area</option>
+      <option  [ngValue]="2">Similar Works Reviewed (MLT)</option>
+      <option  [ngValue]="3">Geographical Distance</option>
+    </select>
+  </div>
+  <br>
+  <div *ngIf="recOdakle == 1" class="form-group">
+    <label for="exampleFormControlSelect1">Select Reviewers</label>
+    <select [(ngModel)]="scodabrani" multiple class="form-control">
+      <option *ngFor="let screc of screcs" [ngValue]="screc.id">
+        {{screc.ime}}
+      </option>
+    </select>
+  </div>
+  <div *ngIf="recOdakle == 2" class="form-group">
+    <label for="exampleFormControlSelect1">Select Reviewers</label>
+    <select [(ngModel)]="mltodabrani" multiple class="form-control">
+      <option *ngFor="let mltrec of mltrecs" [ngValue]="mltrec.id">
+        {{mltrec.ime}}
+      </option>
+    </select>
+  </div>
+  <div *ngIf="recOdakle == 3" class="form-group">
+    <label for="exampleFormControlSelect1">Select Reviewers</label>
+    <select [(ngModel)]="geoodabrani" multiple class="form-control">
+      <option *ngFor="let georec of georecs" [ngValue]="georec.id">
+        {{georec.ime}}
+      </option>
+    </select>
+  </div>
+  <br>
+  <button  class="btn btn-success" (click)="submitReviewers()"  type="submit">Submit</button>
+</div>
+
+
+</div>
