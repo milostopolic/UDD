@@ -60,7 +60,7 @@ public class SearchController {
 	@Autowired
 	RestTemplate restTemplate;
 
-	@GetMapping(path = "/byTitle/{phrase}/{title}", produces = "application/json")
+	@GetMapping("/byTitle/{phrase}/{title}")
 	public ResponseEntity<List<WorkESDTO>> searchByTitle(@PathVariable String title, @PathVariable Long phrase) throws Exception {
 		String query = "";
 		
@@ -91,8 +91,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetVal(locatedNode, "title");
@@ -100,7 +99,7 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/byMagazineName/{phrase}/{magazineName}", produces = "application/json")
+	@GetMapping("/byMagazineName/{phrase}/{magazineName}")
 	public ResponseEntity<List<WorkESDTO>> searchByMagazineName(@PathVariable String magazineName,	@PathVariable Long phrase) throws Exception {
 
 		String query = "";
@@ -132,8 +131,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetVal(locatedNode, "magazineName");
@@ -141,7 +139,7 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/byKeyTerms/{phrase}/{keyTerms}", produces = "application/json")
+	@GetMapping("/byKeyTerms/{phrase}/{keyTerms}")
 	public ResponseEntity<List<WorkESDTO>> searchByKeyTerms(@PathVariable String keyTerms, @PathVariable Long phrase) throws Exception {
 
 		String query = "";
@@ -173,8 +171,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetVal(locatedNode, "keyTerms");
@@ -182,7 +179,7 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/byAuthors/{phrase}/{authors}", produces = "application/json")
+	@GetMapping("/byAuthors/{phrase}/{authors}")
 	public ResponseEntity<List<WorkESDTO>> searchByAuthors(@PathVariable String authors, @PathVariable Long phrase) throws Exception {
 
 		String query = "";
@@ -213,8 +210,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetVal(locatedNode, "authors");
@@ -222,7 +218,7 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/byWorkContent/{phrase}/{workContent}", produces = "application/json")
+	@GetMapping("/byWorkContent/{phrase}/{workContent}")
 	public ResponseEntity<List<WorkESDTO>> searchByWorkContent(@PathVariable String workContent, @PathVariable Long phrase) throws Exception {
 
 		String query = "";
@@ -254,8 +250,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetVal(locatedNode, "workContent");
@@ -263,7 +258,7 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/byScienceAreas/{scienceAreas}", produces = "application/json")
+	@GetMapping("/byScienceAreas/{scienceAreas}")
 	public ResponseEntity<List<WorkESDTO>> searchBySA(@PathVariable String scienceAreas) {
 		String[] areas = scienceAreas.split("-");
 		List<Long> areasIds = new ArrayList<>();
@@ -288,12 +283,12 @@ public class SearchController {
 		return new ResponseEntity<List<WorkESDTO>>(retVal, HttpStatus.OK);
 	}	
 
-	@PostMapping(path = "/advancedSearch", consumes = "application/json", produces = "application/json")
+	@PostMapping("/advancedSearch")
 	public ResponseEntity<List<WorkESDTO>> advancedSearch(@RequestBody AdvancedSearchDTO dto) throws Exception {
 
-		String must = "\"must\" : [\n";
+		String must = "\"must\" : [";
 
-		String should = "\"should\" : [\n";
+		String should = "\"should\" : [";
 
 		boolean shouldBe = false;
 		boolean mustBe = false;
@@ -344,9 +339,9 @@ public class SearchController {
 		should = should.substring(0, should.length() - 1);
 		must += "],";
 		should += "],";
-		String query="{\n" +
-                "  \"query\": {\n" +
-                "    \"bool\" : {\n";
+		String query="{" +
+                "  \"query\": {" +
+                "    \"bool\" : {";
 		if (mustBe) {
 			query += must;
 		}
@@ -355,27 +350,27 @@ public class SearchController {
 			query += should;
 		}
 		
-		query+="         \"boost\" : 1.0\n" +
-                "    }\n" +
-                "  },\n" +
-                "\"highlight\" : {\n" +
-                "        \"fields\" : {\n" +
+		query+="         \"boost\" : 1.0" +
+                "    }" +
+                "  }," +
+                "\"highlight\" : {" +
+                "        \"fields\" : {" +
                 "            \"magazineName\" : {" +
-                "               \t\"type\":\"plain\"\n" +
-                            "},\n" +
+                "               \"type\":\"plain\"" +
+                            "}," +
                     "        \"title\" : {" +
-                    "           \t\"type\":\"plain\"\n" +
-                            "},\n" +
+                    "           \"type\":\"plain\"" +
+                            "}," +
                     "        \"keyTerms\" : {" +
-                    "             \t\"type\":\"plain\"\n" +
-                            "},\n" +
+                    "             \"type\":\"plain\"" +
+                            "}," +
                     "       \"content\" : {" +
-                    "               \t\"type\":\"plain\"\n" +
-                            "},\n" +
+                    "               \"type\":\"plain\"" +
+                            "}," +
                     "        \"authors\" : {" +
-                    "               \t\"type\":\"plain\"\n" +
-                            "}\n" +
-                "        }\n" +
+                    "               \"type\":\"plain\"" +
+                            "}" +
+                "        }" +
                 "    }"+
                 "}";
 
@@ -384,8 +379,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> retVal = getRetValAdvanced(locatedNode);
@@ -430,7 +424,7 @@ public class SearchController {
 		return new ResponseEntity<List<RecenzentDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/getMoreLikeThisReviewers/{workId}", produces = "application/json")
+	@GetMapping("/getMoreLikeThisReviewers/{workId}")
 	public ResponseEntity<Set<RecenzentDTO>> getRevsByMoreLikeThis(@PathVariable Long workId) throws Exception {
 		Set<RecenzentDTO> retVal = new HashSet<>();
 
@@ -466,8 +460,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/es/work/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/es/work/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		JsonNode locatedNode = rootNode.path("hits").path("hits");
 		List<WorkESDTO> works = getRetVal(locatedNode, "workContent");
@@ -483,7 +476,7 @@ public class SearchController {
 		return new ResponseEntity<Set<RecenzentDTO>>(retVal, HttpStatus.OK);
 	}
 
-	@GetMapping(path = "/getReviewersByLocation/{workId}", produces = "application/json")
+	@GetMapping("/getReviewersByLocation/{workId}")
 	public ResponseEntity<List<RecenzentDTO>> getRevsByLocation(@PathVariable Long workId) throws Exception {
 
 		NaucniRad work = naucniRadRepository.getOne(workId);
@@ -520,8 +513,7 @@ public class SearchController {
 
 		RestTemplate restTemplate = new RestTemplate();
 		HttpEntity<JsonNode> request = new HttpEntity<>(jsonquery);
-		String fooResourceUrl = "http://localhost:9200/us/user/_search?pretty";
-		ResponseEntity<String> response = restTemplate.postForEntity(fooResourceUrl, request, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity("http://localhost:9200/us/user/_search?pretty", request, String.class);
 		JsonNode rootNode = objectMapper.readTree(response.getBody());
 		List<RecenzentDTO> retVal = this.getReviewersFromResponse(rootNode); 
 		
